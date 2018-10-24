@@ -1,4 +1,5 @@
 import sqlite3
+import os
 
 class VoiceDBInterface(object):
     def __init__(self, database_path):
@@ -11,3 +12,12 @@ class VoiceDBInterface(object):
         c.execute('INSERT INTO Voices(DecibalsCounter, UserName, VoiceData) VALUES ("1", "1", "%s")' % (voice_model.blob))
         conn.commit()
         conn.close()
+
+    def get_noisy_people(self):
+        conn = sqlite3.connect(self._db_path)
+        c = conn.cursor()
+        c.execute('SELECT * FROM NoisyUsers order by Datetime')
+        rows = c.fetchall()
+        conn.commit()
+        conn.close()
+        return rows

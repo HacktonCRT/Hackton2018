@@ -7,6 +7,7 @@ from Common.decibels_filter import DecibelsRecognizer
 from Common.seperate_voice import SeprateVoice
 from Common.voice_blamer import VoiceBlamer
 from voices_container import VoicesFolderManager
+from voice_db_interface import VoiceDBInterface
 
 voice_decibels_recognizer = DecibelsRecognizer()
 voice_separator = SeprateVoice()
@@ -24,8 +25,17 @@ class VoicesReceiver(BaseHTTPRequestHandler):
             voices_handler.handle_voice(base64.b64encode(post_body))
 
     def do_GET(self):
-       if 'handle_voice' in self.path:
-           self.return_http_ok()
+        if 'getNoisyPeople' in self.path:
+            voice_database = VoiceDBInterface('VoicesDB.db')
+            noisy_people = voice_database.get_noisy_people()
+            print noisy_people 
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.end_headers()
+            self.wfile.write(noisy_people)
+            self.wfile.write('\n')
+            return
 
     def return_http_ok(self, s=''):
         self.send_response(200)
@@ -38,7 +48,7 @@ class VoicesReceiver(BaseHTTPRequestHandler):
 
 
 SERVER_URL = r'localhost'
-PORT_NUMBER = 8892
+PORT_NUMBER = 8894
 
 if __name__ == "__main__":
     httpd = HTTPServer((SERVER_URL, PORT_NUMBER), VoicesReceiver)
