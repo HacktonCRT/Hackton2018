@@ -1,7 +1,7 @@
 import os.path
 import uuid
 
-class voices_folder_manager(object):
+class VoicesFolderManager:
  	def __init__(self, folder_path):
 			self.__folder_path = folder_path
 
