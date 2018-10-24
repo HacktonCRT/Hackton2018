@@ -1,7 +1,7 @@
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 from voices_observer import  VoicesHandler
 import time
-import base64
+import json
 
 from Common.decibels_filter import DecibelsRecognizer
 from Common.seperate_voice import SeprateVoice
@@ -21,8 +21,8 @@ class VoicesReceiver(BaseHTTPRequestHandler):
         print "request received"
         if 'handle_voice' in self.path:
             content_len = int(self.headers.getheader('content-length', 0))
-            post_body = self.rfile.read(content_len)
-            voices_handler.handle_voice(base64.b64encode(post_body))
+            body = json.loads(self.rfile.read(content_len))
+            print body
 
     def do_GET(self):
         if 'getNoisyPeople' in self.path:
@@ -48,7 +48,7 @@ class VoicesReceiver(BaseHTTPRequestHandler):
 
 
 SERVER_URL = r'localhost'
-PORT_NUMBER = 8894
+PORT_NUMBER = 8892
 
 if __name__ == "__main__":
     httpd = HTTPServer((SERVER_URL, PORT_NUMBER), VoicesReceiver)

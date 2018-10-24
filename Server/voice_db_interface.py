@@ -21,3 +21,5 @@ class VoiceDBInterface(object):
         conn.commit()
         conn.close()
         return rows
+
+    
