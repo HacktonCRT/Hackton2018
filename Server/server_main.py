@@ -1,4 +1,5 @@
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
+from voices_observer import  VoicesHandler
 
 class VoicesReceiver(BaseHTTPRequestHandler):
     def __init__(self, *args):
@@ -18,10 +19,7 @@ class VoicesReceiver(BaseHTTPRequestHandler):
 SERVER_URL = r'http://192.168.56.126:8892/'
 PORT_NUMBER = 8892
 
-if __name__ == "__main__":	
-    try:
-        server = HTTPServer(('', PORT_NUMBER), VoicesReceiver)
-        server.serve_forever()
-    except KeyboardInterrupt:
-        print '^C received, shutting down the web server'
-        server.socket.close()
+if __name__ == "__main__":
+    voices_handler = VoicesHandler()
+
+
