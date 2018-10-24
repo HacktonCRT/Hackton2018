@@ -1,8 +1,8 @@
 class VoiceModel(object):
     def __init__(self, blob):
         super(VoiceModel, self).__init__()
-        self._voice_relation = None
-        self._decibels_counter = None
+        self._voice_relation = ""
+        self._decibels_counter = ""
         self._blob = blob
 
     @property

@@ -8,6 +8,6 @@ class VoiceDBInterface(object):
     def insert_voice(self, voice_model):
         conn = sqlite3.connect(self._db_path)
         c = conn.cursor()
-        c.execute('INSERT INTO Voices(DecibelsCounter, UserName, VoiceData) VALUES ("%s", "%s", "%s")', voice_model.decibels_counter, voice_model.voice_relation, voice_model.blob)
+        c.execute('INSERT INTO Voices(DecibalsCounter, UserName, VoiceData) VALUES ("1", "1", "%s")' % (voice_model.blob))
         conn.commit()
         conn.close()

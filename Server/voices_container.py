@@ -1,7 +1,7 @@
 import uuid
 
 class VoicesFolderManager(object):
-    def __init__(self, folder_path):
+    def __init__(self, folder_path =".\\Voices\\"):
         super(VoicesFolderManager, self).__init__()
         self.__folder_path = folder_path
 

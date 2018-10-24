@@ -3,4 +3,4 @@ class DecibelsRecognizer(object):
 		super(DecibelsRecognizer, self).__init__()
 
 	def get_decibels(self, blob):
-		pass
+		return ""

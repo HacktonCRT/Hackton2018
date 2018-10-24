@@ -3,4 +3,4 @@ class VoiceBlamer(object):
 		super(VoiceBlamer, self).__init__()
 
 	def get_user_name_by_voice(self,blob):
-		pass
+		return ""
