@@ -2,7 +2,8 @@ import requests
 from LiveRecorder import Recorder
 import time
 import json
-import socket
+import active_directory
+import getpass
 
 
 results = []
@@ -11,7 +12,7 @@ def handler(data):
     json_data = {}
     json_data['time'] = time.time()
     json_data['level'] = data
-    json_data['computer'] = socket.gethostname()
+    json_data['computer'] = active_directory.find_user(getpass.getuser()).cn.replace(" ",".") + "@cellebrite.com"
     #send request
     print json.dumps(json_data)
     r = requests.post('http://localhost:8892/handle_voice',json.dumps(json_data))

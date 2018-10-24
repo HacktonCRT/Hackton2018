@@ -22,4 +22,9 @@ class VoiceDBInterface(object):
         conn.close()
         return rows
 
-    
+    def insert_noise_times(self, reporting_pc, time, level):
+        conn = sqlite3.connect(self._db_path)
+        c = conn.cursor()
+        c.execute('INSERT INTO NoiseReports(Time, ReportingPc, Level) VALUES (%s, "%s", %s)' % (time,reporting_pc,level))
+        conn.commit()
+        conn.close()

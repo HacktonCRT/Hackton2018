@@ -2,6 +2,7 @@ from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 from voices_observer import  VoicesHandler
 import time
 import json
+from math import floor
 
 from Common.decibels_filter import DecibelsRecognizer
 from Common.seperate_voice import SeprateVoice
@@ -23,6 +24,9 @@ class VoicesReceiver(BaseHTTPRequestHandler):
             content_len = int(self.headers.getheader('content-length', 0))
             body = json.loads(self.rfile.read(content_len))
             print body
+            voice_database = VoiceDBInterface('VoicesDB.db')
+            voice_database.insert_noise_times(body[u'computer'],floor(body[u'time']),body['level'])
+
 
     def do_GET(self):
         if 'getNoisyPeople' in self.path:
