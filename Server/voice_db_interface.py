@@ -35,10 +35,32 @@ class VoiceDBInterface(object):
         conn = sqlite3.connect(self._db_path)
         c = conn.cursor()
         lastHr = math.floor(time.time()) - 3600
-
         c.execute("select Time from NoiseReports Where ReportingPc LIKE \""+username+"\" and time >= "+str(lastHr))
         rows = c.fetchall()
         conn.commit()
         conn.close()
         return len(rows)
 
+    def isUserExist(self, username):
+        conn = sqlite3.connect(self._db_path)
+        c = conn.cursor()
+        lastHr = math.floor(time.time()) - 3600
+        c.execute("select * from NoisyUsers Where Email LIKE \""+username+"\"")
+        rows = c.fetchall()
+        conn.commit()
+        conn.close()
+        return len(rows) > 0
+
+    def updateNoisyPerson(self, username, datetime):
+        if self.isUserExist(username):
+            conn = sqlite3.connect(self._db_path)
+            c = conn.cursor()
+            c.execute('Update NoisyUsers SET Datetime='+str(datetime)+' where Email="'+username+'"')
+            conn.commit()
+            conn.close()
+        else:
+            conn = sqlite3.connect(self._db_path)
+            c = conn.cursor()
+            c.execute('Insert into NoisyUsers(Email,Datetime) Values ("'+username+'",'+str(datetime)+')')
+            conn.commit()
+            conn.close()

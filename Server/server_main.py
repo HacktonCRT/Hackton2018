@@ -21,8 +21,9 @@ voices_handler = VoicesHandler(voice_decibels_recognizer, voice_separator, voice
 def handleNoise(computer_name,unix_time, noiseLvl):
     voice_database = VoiceDBInterface('VoicesDB.db')
     voice_database.insert_noise_times(computer_name, unix_time, noiseLvl)
-    count  = voice_database.GetNoiseCountLastHr(computer_name)
-    print count
+    count = voice_database.GetNoiseCountLastHr(computer_name)
+    if (count > 3 ):
+        voice_database.updateNoisyPerson(computer_name,unix_time)
 
 
 class VoicesReceiver(BaseHTTPRequestHandler):
@@ -36,6 +37,7 @@ class VoicesReceiver(BaseHTTPRequestHandler):
 
     def do_GET(self):
         if 'getNoisyPeople' in self.path:
+            print "1"
             voice_database = VoiceDBInterface('VoicesDB.db')
             noisy_people = voice_database.get_noisy_people()
             print noisy_people 
