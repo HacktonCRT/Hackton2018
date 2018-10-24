@@ -1,6 +1,6 @@
-class FilterByDecibels(object):
+class DecibelsRecognizer(object):
 	def __init__(self):
-		super(FilterByDecibels, self).__init__()
+		super(DecibelsRecognizer, self).__init__()
 
-	def get_voice(self,blob):
+	def get_decibels(self, blob):
 		pass
