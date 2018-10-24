@@ -1,5 +1,7 @@
 import sqlite3
 import os
+import time
+import math
 
 class VoiceDBInterface(object):
     def __init__(self, database_path):
@@ -28,3 +30,15 @@ class VoiceDBInterface(object):
         c.execute('INSERT INTO NoiseReports(Time, ReportingPc, Level) VALUES (%s, "%s", %s)' % (time,reporting_pc,level))
         conn.commit()
         conn.close()
+
+    def GetNoiseCountLastHr(self, username):
+        conn = sqlite3.connect(self._db_path)
+        c = conn.cursor()
+        lastHr = math.floor(time.time()) - 3600
+
+        c.execute("select Time from NoiseReports Where ReportingPc LIKE \""+username+"\" and time >= "+str(lastHr))
+        rows = c.fetchall()
+        conn.commit()
+        conn.close()
+        return len(rows)
+

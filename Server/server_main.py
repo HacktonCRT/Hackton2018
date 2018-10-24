@@ -17,6 +17,14 @@ voice_container = VoicesFolderManager()
 
 voices_handler = VoicesHandler(voice_decibels_recognizer, voice_separator, voice_blamer, voice_container)
 
+
+def handleNoise(computer_name,unix_time, noiseLvl):
+    voice_database = VoiceDBInterface('VoicesDB.db')
+    voice_database.insert_noise_times(computer_name, unix_time, noiseLvl)
+    count  = voice_database.GetNoiseCountLastHr(computer_name)
+    print count
+
+
 class VoicesReceiver(BaseHTTPRequestHandler):
     def do_POST(self):
         print "request received"
@@ -24,9 +32,7 @@ class VoicesReceiver(BaseHTTPRequestHandler):
             content_len = int(self.headers.getheader('content-length', 0))
             body = json.loads(self.rfile.read(content_len))
             print body
-            voice_database = VoiceDBInterface('VoicesDB.db')
-            voice_database.insert_noise_times(body[u'computer'],floor(body[u'time']),body['level'])
-
+            handleNoise(body[u'computer'],floor(body[u'time']),body['level'])
 
     def do_GET(self):
         if 'getNoisyPeople' in self.path:
