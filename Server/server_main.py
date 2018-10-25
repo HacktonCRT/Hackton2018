@@ -48,6 +48,18 @@ class VoicesReceiver(BaseHTTPRequestHandler):
             self.wfile.write(noisy_people)
             self.wfile.write('\n')
             return
+        if 'getNoisyMap' in self.path:
+            voice_database = VoiceDBInterface('VoicesDB.db')
+            email = self.path.split("?")
+            photo_id = voice_database.get_noisy_map(email[1])
+            print str(photo_id) + '.gif'
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.end_headers()
+            self.wfile.write(str(photo_id) + '.gif')C
+            return
+
 
     def return_http_ok(self, s=''):
         self.send_response(200)
@@ -60,7 +72,7 @@ class VoicesReceiver(BaseHTTPRequestHandler):
 
 
 SERVER_URL = r'localhost'
-PORT_NUMBER = 8892
+PORT_NUMBER = 8894
 
 if __name__ == "__main__":
     httpd = HTTPServer((SERVER_URL, PORT_NUMBER), VoicesReceiver)

@@ -24,6 +24,15 @@ class VoiceDBInterface(object):
         conn.close()
         return rows
 
+    def get_noisy_map(self, mail):
+        conn = sqlite3.connect(self._db_path)
+        c = conn.cursor()
+        c.execute('SELECT * FROM SeatingTable WHERE Email=("%s")' % (mail))
+        rows = c.fetchall()
+        conn.commit()
+        conn.close()
+        return rows[0][2]
+
     def insert_noise_times(self, reporting_pc, time, level):
         conn = sqlite3.connect(self._db_path)
         c = conn.cursor()
